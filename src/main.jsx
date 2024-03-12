@@ -1,10 +1,38 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
 import './index.css'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Layout from './Layout'
+import NuevoCliente, { action as nuevoClienteAction } from './pages/NuevoCliente'
+import Index, { loader as clientesLoader } from "./pages/Index";
+
+// La funcion toma un arreglo con las diferentes rutas por medio de un objeto
+const router = createBrowserRouter([
+  {
+    path: "/", 
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Index />,
+        loader: clientesLoader
+      },
+      {
+        path: "/clientes/nuevo",
+        element: <NuevoCliente />,
+        action: nuevoClienteAction
+      },
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider 
+      router={router}
+    />
   </React.StrictMode>,
 )
+
+// Para obtener datos uso loader
+// Para procesar un Formulario uso un Action
