@@ -14,6 +14,7 @@ function Layout() {
 
         <nav className="mt-10">
           <Link 
+          // Si la ruta en la que se encuentra es '/' entonces muestra ciertas clases
             className={`${location.pathname === '/' ? 'text-blue-300' : 'text-white'} block text-2xl mt-2 hover:text-sky-300`} 
             to="/">Clientes</Link>
           <Link 

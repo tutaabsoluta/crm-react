@@ -1,13 +1,43 @@
-import { useNavigate, Form } from "react-router-dom";
+/* eslint-disable no-control-regex */
+import { useNavigate, Form, useActionData, redirect } from "react-router-dom";
 import Formulario from "../components/Formulario";
+import Error from "../components/Error";
+import { agregarCliente } from "../data/clientes";
 
-export function action() {
-  console.log('Enviando...');
-  return null
+export async function action({ request }) {
+  // El objeto formData contiene toda la informacion del formulario
+  const formData = await request.formData();
+
+  const datos = Object.fromEntries(formData);
+
+  const email = formData.get("email");
+
+  // Validacion
+  const errores = [];
+  if (Object.values(datos).includes("")) {
+    errores.push("Todos los campos son obligatorios");
+  }
+
+  let regex = new RegExp(
+    "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+  );
+
+  if (!regex.test(email)) {
+    errores.push("El email no es valido");
+  }
+  // Retornar datos si hay errores
+  if (Object.keys(errores).length) {
+    return errores;
+  }
+
+  await agregarCliente(datos);
+  return redirect("/");
 }
 
 function NuevoCliente() {
+  const errores = useActionData();
   const navigate = useNavigate();
+
   return (
     <>
       <h1 className="font-black text-4xl text-sky-700">Nuevo Cliente</h1>
@@ -25,9 +55,10 @@ function NuevoCliente() {
       </div>
 
       <div className="bg-white shadouw rounded-md md:w-3/4 mx-auto px-5 py-10 mt-20">
-        <Form 
-          method="POST"
-        >
+        {/* Si errores es truthy */}
+        {errores?.length &&
+          errores.map((error, i) => <Error key={i}>{error}</Error>)}
+        <Form method="POST" noValidate>
           <Formulario />
           <input
             type="submit"
@@ -40,8 +71,8 @@ function NuevoCliente() {
   );
 }
 
-// useNavigate permite redireccionar dentro de botobes
+// Redireccionar a otras URLs:
+// useNavigate permite redireccionar dentro de botones
 // Redirect es ideal en Loaders y en Actions
 
-export default NuevoCliente
-
+export default NuevoCliente;
