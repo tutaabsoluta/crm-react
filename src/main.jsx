@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './Layout'
 import NuevoCliente, { action as nuevoClienteAction } from './pages/NuevoCliente'
 import Index, { loader as clientesLoader } from "./pages/Index";
+import EditarCliente, { loader as editarClienteLoader, action as editarClienteAction } from "./pages/EditarCliente";
 import ErrorPage from './components/ErrorPage'
 
 // La funcion toma un arreglo con las diferentes rutas por medio de un objeto
@@ -22,7 +23,15 @@ const router = createBrowserRouter([
       {
         path: "/clientes/nuevo",
         element: <NuevoCliente />,
-        action: nuevoClienteAction
+        action: nuevoClienteAction,
+        errorElement: <ErrorPage />
+      },
+      {
+        path: '/clientes/:clienteId/editar/',
+        element: <EditarCliente />,
+        loader: editarClienteLoader,
+        action: editarClienteAction,
+        errorElement: <ErrorPage />
       },
     ],
   },
@@ -38,3 +47,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 
 // Para obtener datos uso loader
 // Para procesar un Formulario uso un Action
+// Cuando tengo que editar un registro necesito routing dinamico:
+// '/clientes/:clienteId/editar/': clienteId es una variable para editar cada cliente
