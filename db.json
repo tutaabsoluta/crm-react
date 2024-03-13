@@ -35,14 +35,6 @@
       "telefono": 1398198938,
       "email": "pedro@juan.com",
       "empresa": "Codigo Con Juan"
-    },
-    {
-      "id": "f965",
-      "nombre": "Sergio",
-      "empresa": "Amazon",
-      "email": "ser@correo.com",
-      "telefono": "123345566",
-      "notas": "Desea una app"
     }
   ]
 }

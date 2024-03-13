@@ -1,12 +1,13 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Layout from './Layout'
-import NuevoCliente, { action as nuevoClienteAction } from './pages/NuevoCliente'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Layout from './Layout';
+import NuevoCliente, { action as nuevoClienteAction } from './pages/NuevoCliente';
 import Index, { loader as clientesLoader } from "./pages/Index";
 import EditarCliente, { loader as editarClienteLoader, action as editarClienteAction } from "./pages/EditarCliente";
-import ErrorPage from './components/ErrorPage'
+import ErrorPage from './components/ErrorPage';
+import { action as eliminarClienteAction } from './components/Cliente';
 
 // La funcion toma un arreglo con las diferentes rutas por medio de un objeto
 const router = createBrowserRouter([
@@ -33,8 +34,13 @@ const router = createBrowserRouter([
         action: editarClienteAction,
         errorElement: <ErrorPage />
       },
-    ],
-  },
+      {
+        path: 'clientes/:clienteId/eliminar',
+        action: eliminarClienteAction,
+        errorElement: <ErrorPage />
+      },
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -42,8 +48,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <RouterProvider 
       router={router}
     />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
 
 // Para obtener datos uso loader
 // Para procesar un Formulario uso un Action
